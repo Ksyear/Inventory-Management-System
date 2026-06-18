@@ -142,10 +142,14 @@ public class ShopManager {
         return priceMap.get(price);
     }
 
-    public Product getStock(){
+    public void getStock(){
         System.out.println("재고을 입력하시오: ");
         stock = scanner.nextInt();
-        return stockMap.get(stock);
+        for (Product product : Products) {
+            if(product.getStock() == stock){
+                System.out.println(product);
+            }
+        }
     }
 
     public Product getSoldOut(){

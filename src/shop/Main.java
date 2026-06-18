@@ -62,7 +62,7 @@ public class Main {
                     System.out.println(shopManager.getPrice());
                     break;
                 case 12:
-                    System.out.println(shopManager.getStock());
+                    shopManager.getStock();
                     break;
                 case 13:
                     System.out.println(shopManager.getSoldOut());
