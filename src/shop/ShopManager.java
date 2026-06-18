@@ -6,7 +6,7 @@ public class ShopManager {
     Scanner scanner = new Scanner(System.in);
     List<Product> Products = new ArrayList<>();
     Map<String, Product> nameMap = new HashMap<>();
-    Map<String, Product> categoryMap = new HashMap<>();
+    Set<String> categorySet = new HashSet<>();
     Map<Integer, Product> priceMap = new HashMap<>();
     Map<Integer, Product> stockMap = new HashMap<>();
     Map<Boolean, Product> isSoldOutMap = new HashMap<>();
@@ -28,7 +28,7 @@ public class ShopManager {
         Product product = new Product(productId, name, category, price, stock, soldOut);
         Products.add(product);
         nameMap.put(product.name(), product);
-        categoryMap.put(product.category(), product);
+        categorySet.add(product.category());
         priceMap.put(product.price(), product);
         stockMap.put(product.stock(), product);
         isSoldOutMap.put(product.soldOut(), product);
@@ -37,7 +37,7 @@ public class ShopManager {
     public void removeProduct(String name){
         Product product = nameMap.get(name);
         nameMap.remove(product.name(), product);
-        categoryMap.remove(product.category(), product);
+//        categorySet.remove(product.category());  근데 이거 하면 안에 중복되던 애들꺼도 지움
         priceMap.remove(product.price(), product);
         stockMap.remove(product.stock(), product);
         isSoldOutMap.put(product.soldOut(), product);
@@ -116,7 +116,7 @@ public class ShopManager {
 
     public void printAll(){
         for(Product product: Products){
-            System.out.println(product.toString());
+            System.out.println(product);
         }
     }
 
@@ -126,10 +126,14 @@ public class ShopManager {
         return nameMap.get(name);
     }
 
-    public Product getCategory(){
+    public void getCategory(){
         System.out.println("카테고리를 입력하시오: ");
         category = scanner.next();
-        return categoryMap.get(category);
+        for(Product product: Products){
+            if(product.getCategory().equals(category)){
+                System.out.println(product);
+            }
+        }
     }
 
     public Product getPrice(){
@@ -148,39 +152,44 @@ public class ShopManager {
         return isSoldOutMap.get(true);
     }
 
-    // 카테고리 별 상품 정보  출력
     public void category(){
-        for(Product product: categoryMap.values()){
-            System.out.println(product.toString());
+        for (String category : categorySet) {
+            for (Product product : Products) {
+                if (Objects.equals(category, product.getCategory())) {
+                    System.out.println(product);
+                }
+            }
         }
     }
 
     public void price(){
-        for(Product product: priceMap.values()){
-            System.out.println(product.toString());
+        Map<Integer, Product> sortPriceMap = new TreeMap<>(priceMap);
+        for (Product product : sortPriceMap.values()) {
+            System.out.println(product);
         }
     }
 
     public void stock() {
         System.out.println("재고를 입력하시오: ");
         stock = scanner.nextInt();
-        for(int i = 0; i < stock; i++){
-            if(stockMap.containsKey(stock)){
-                System.out.println(stockMap.get(stock));
+        for (Product product : Products) {
+            if(product.getStock() <= stock){
+                System.out.println(product);
             }
         }
     }
 
     public void averagePrice(){
-        for (String category : categoryMap.keySet()) {
+        for (String category : categorySet) {
             for(Product product: Products) {
-                if (categoryMap.containsKey(category)) {
-                    sum += categoryMap.get(category).getPrice();
+                if (product.getCategory().equals(category)) {
+                    sum += product.getPrice();
                     count++;
                 }
             }
-            average = (double) sum /count;
+            average = (double) sum / count;
             System.out.println(category + "의 평균 값: " + average);
+            sum=0;
             count=0;
         }
     }

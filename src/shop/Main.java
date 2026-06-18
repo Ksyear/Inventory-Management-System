@@ -53,19 +53,19 @@ public class Main {
                     shopManager.printAll();
                     break;
                 case 9:
-                    shopManager.getName();
+                    System.out.println(shopManager.getName());
                     break;
                 case 10:
                     shopManager.getCategory();
                     break;
                 case 11:
-                    shopManager.getPrice();
+                    System.out.println(shopManager.getPrice());
                     break;
                 case 12:
-                    shopManager.getStock();
+                    System.out.println(shopManager.getStock());
                     break;
                 case 13:
-                    shopManager.getSoldOut();
+                    System.out.println(shopManager.getSoldOut());
                     break;
                 case 14:
                     shopManager.category();
